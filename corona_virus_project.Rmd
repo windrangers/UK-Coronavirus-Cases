@@ -1,0 +1,75 @@
+---
+title: "Coronavirus Cases"
+author: "Mike"
+date: "17/09/2020"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Coronavirus Project
+
+This is a simple project (mostly so I can practice R) looking at the Coronavirus cases in the United Kingdom. I will also be plotting the dates of 1) the initial lockdown, 2) the lifting of restrictions on pubs, 3) the reopening of workplaces and 4) the reopening of schools. My data is drawn from the government website operated by Public Health England and NHSX.
+
+```{r uk_cases}
+library(dplyr)
+library(readr)
+
+uk_cases <- read_csv("data_2020-Sep-16.csv")
+#head(uk_cases)
+total_cases <- uk_cases %>%
+  filter(areaName == "England") %>%
+  group_by(date) %>%
+  summarize_at(vars(newCasesBySpecimenDate, cumCasesBySpecimenDate), sum) 
+
+total_cases <- total_cases %>%
+  mutate(day=c(1:nrow(total_cases)))
+  
+
+total_Cases <- total_cases %>%
+  as.data.frame()
+total_cases
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+library(ggplot2)
+
+coronavirus_cumulative_plot <- ggplot(data=total_cases, aes(x=day, y=cumCasesBySpecimenDate)) +
+                    geom_line(color="red") +
+                    geom_vline(xintercept=45) +
+  geom_text(aes(x=45, label="Uk Lockdown\n", y=150000), colour="black", angle=90) +
+  geom_vline(xintercept=45+14, color="blue", linetype="dashed") +
+  geom_text(aes(x=157, label="Pubs Reopen\n", y=150000), colour="black", angle=90) +
+                    geom_vline(xintercept=157) +
+  geom_vline(xintercept=157+14, color="blue", linetype="dashed") +
+  geom_text(aes(x=216, label="Schools Reopen\n", y=150000), colour="black", angle=90) +
+                    geom_vline(xintercept=216) +
+geom_vline(xintercept=216+14, color="blue", linetype="dashed") +
+  labs(title="Cumulative Coronavirus Cases by Day", x="Days since Jan 30", y="Total Number of Cases")
+  
+coronavirus_cumulative_plot
+
+coronavirus_new_plot <- ggplot(data=total_cases, aes(x=day, y=newCasesBySpecimenDate)) +
+                        geom_line(color="red") +
+                        geom_vline(xintercept=45) +
+  geom_text(aes(x=45, label="Uk Lockdown\n", y=2500), colour="black", angle=90) +
+  geom_vline(xintercept=45 + 14, color="blue", linetype="dashed") +
+                    geom_vline(xintercept=157) +
+  geom_text(aes(x=157, label="Pubs Reopen\n", y=2500), colour="black", angle=90) +
+  geom_vline(xintercept=157+14, color="blue", linetype="dashed") +
+                    geom_vline(xintercept=216) +
+  geom_text(aes(x=216, label="Schools Reopen\n", y=2500), colour="black", angle=90) +
+  geom_vline(xintercept=216+14, color="blue", linetype="dashed") +
+  labs(title="New Coronavirus Cases by Day", x="Days since Jan 30", y="Number of New Cases")
+
+coronavirus_new_plot
+
+```
+

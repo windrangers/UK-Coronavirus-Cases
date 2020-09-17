@@ -44,32 +44,36 @@ library(ggplot2)
 coronavirus_cumulative_plot <- ggplot(data=total_cases, aes(x=day, y=cumCasesBySpecimenDate)) +
                     geom_line(color="red") +
                     geom_vline(xintercept=45) +
-  geom_text(aes(x=45, label="Uk Lockdown\n", y=150000), colour="black", angle=90) +
+  geom_text(aes(x=45, label="Uk Lockdown (16 March)\n", y=150000), colour="black", angle=90) +
   geom_vline(xintercept=45+14, color="blue", linetype="dashed") +
-  geom_text(aes(x=157, label="Pubs Reopen\n", y=150000), colour="black", angle=90) +
+  geom_text(aes(x=157, label="Pubs Reopen (4 July)\n", y=150000), colour="black", angle=90) +
                     geom_vline(xintercept=157) +
   geom_vline(xintercept=157+14, color="blue", linetype="dashed") +
-  geom_text(aes(x=216, label="Schools Reopen\n", y=150000), colour="black", angle=90) +
+  geom_text(aes(x=216, label="Schools Reopen (1 Sept)\n", y=150000), colour="black", angle=90) +
                     geom_vline(xintercept=216) +
 geom_vline(xintercept=216+14, color="blue", linetype="dashed") +
   labs(title="Cumulative Coronavirus Cases by Day", x="Days since Jan 30", y="Total Number of Cases")
   
 coronavirus_cumulative_plot
 
+ggsave("coronavirus_cumulative_plot.png")
+
 coronavirus_new_plot <- ggplot(data=total_cases, aes(x=day, y=newCasesBySpecimenDate)) +
                         geom_line(color="red") +
                         geom_vline(xintercept=45) +
-  geom_text(aes(x=45, label="Uk Lockdown\n", y=2500), colour="black", angle=90) +
+  geom_text(aes(x=45, label="Uk Lockdown (16 March)\n", y=2500), colour="black", angle=90) +
   geom_vline(xintercept=45 + 14, color="blue", linetype="dashed") +
                     geom_vline(xintercept=157) +
-  geom_text(aes(x=157, label="Pubs Reopen\n", y=2500), colour="black", angle=90) +
+  geom_text(aes(x=157, label="Pubs Reopen (4 July)\n", y=2500), colour="black", angle=90) +
   geom_vline(xintercept=157+14, color="blue", linetype="dashed") +
                     geom_vline(xintercept=216) +
-  geom_text(aes(x=216, label="Schools Reopen\n", y=2500), colour="black", angle=90) +
+  geom_text(aes(x=216, label="Schools Reopen (1 Sept)\n", y=2500), colour="black", angle=90) +
   geom_vline(xintercept=216+14, color="blue", linetype="dashed") +
   labs(title="New Coronavirus Cases by Day", x="Days since Jan 30", y="Number of New Cases")
 
 coronavirus_new_plot
+
+ggsave("coronavirus_new_cases_plot.png")
 
 ```
 
